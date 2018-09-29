@@ -1,9 +1,6 @@
 package org.kangere.movie.views;
 
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.Layout;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import mongodao.DAO;
 import mongodao.MovieDetailsDAO;
 import orm.MovieDetailsORM;
@@ -53,7 +50,22 @@ public class MovieDetailsView extends VerticalLayout {
 
     private Layout getInsertUpdateForm(){
 
-        GridLayout layout = new GridLayout();
+        GridLayout layout = new GridLayout(3,4);
+
+        TextField constant = new TextField();
+        TextField title = new TextField();
+        TextField genre = new TextField();
+        TextField director = new TextField();
+        TextField release_date = new TextField();
+        TextField rating = new TextField();
+        TextField runtime = new TextField();
+        TextField url = new TextField();
+        TextField votes = new TextField();
+
+        layout.addComponent(constant,0,0);
+        layout.addComponent(title,1,0);
+        layout.addComponent(genre,2,0);
+
 
 
 
