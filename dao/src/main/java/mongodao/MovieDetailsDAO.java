@@ -5,16 +5,16 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
-import com.sun.istack.internal.NotNull;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import orm.MovieDetailsORM;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieDetailsDAO implements DAO{
+import static com.mongodb.client.model.Filters.eq;
+
+public class MovieDetailsDAO implements DAO<MovieDetailsORM>{
 
     private MongoCollection<Document> movieDetails;
     private MongoClient client;
@@ -25,52 +25,60 @@ public class MovieDetailsDAO implements DAO{
         movieDetails = db.getCollection("movieDetails");
     }
 
+    @Override
     public MovieDetailsORM findFirst(){
 
         Document doc = movieDetails.find().first();
 
-        return  convertToORM(doc);
+        return  ORMConverterUtil.convertToORM(doc);
     }
 
+    @Override
     public List<MovieDetailsORM> findAll(){
 
         List<MovieDetailsORM> orms = new ArrayList<>();
 
         for(Document document : movieDetails.find().into(new ArrayList<>()))
-            orms.add(convertToORM(document));
+            orms.add(ORMConverterUtil.convertToORM(document));
 
         return orms;
     }
 
+    @Override
+    public MovieDetailsORM findOne(String id) {
+        Document document = movieDetails.find(eq("_id", new ObjectId(id))).first();
+        return ORMConverterUtil.convertToORM(document);
+    }
 
-    private MovieDetailsORM convertToORM(@NotNull Document document){
+    @Override
+    public void insert(MovieDetailsORM orm) {
 
-        MovieDetailsORM orm = new MovieDetailsORM();
+        Document doc = movieDetails.find(eq("const",orm.getConstant())).first();
 
-        orm.setConstant(document.getString("const"));
-
-        orm.setTitle(document.getString("title"));
-
-        try {
-            orm.setUrl(new URL(document.getString("url")));
-        } catch (MalformedURLException e){
-            e.printStackTrace();
+        if(doc == null){
+            movieDetails.insertOne(ORMConverterUtil.convertToDocument(orm));
+        } else {
+            System.out.println("Document already exists");
         }
 
-        orm.setRating(document.getDouble("imdb_rating"));
+    }
 
-        orm.setRuntime(document.getDouble("runtime"));
+    //TODO Implement
+    @Override
+    public void insertAll(List<MovieDetailsORM> orms) {
 
-        orm.setVotes(document.getDouble("num_votes"));
+    }
 
-        orm.setRelease_date(document.getDate("release_date").toString());
+    //TODO Implement
+    @Override
+    public void update(MovieDetailsORM orm) {
 
-        ((List<String>)document.get("genres")).forEach(orm::setGenres);
+    }
 
-        ((List<String>)document.get("directors")).forEach(orm::setDirectors);
-
-
-        return orm;
+    
+    @Override
+    public void deleteOne(String id) {
+        movieDetails.deleteOne(eq("_id",new ObjectId(id)));
     }
 
     public void close() {

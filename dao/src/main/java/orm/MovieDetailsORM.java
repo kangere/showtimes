@@ -4,10 +4,13 @@ package orm;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 
 public class MovieDetailsORM {
+
+    private String id;
 
     private String constant;
 
@@ -25,7 +28,7 @@ public class MovieDetailsORM {
 
     private List<String> genres = new ArrayList<>();
 
-    private String release_date;
+    private Date release_date;
 
 
     public MovieDetailsORM(){ }
@@ -83,10 +86,10 @@ public class MovieDetailsORM {
     }
 
     public void setDirectors(String...strings){
-        directors.addAll(Arrays.asList(strings));
+        setDirectors(Arrays.asList(strings));
     }
     public void setDirectors(List<String> directors) {
-        this.directors = directors;
+        this.directors.addAll(directors);
     }
 
     public List<String> getGenres() {
@@ -94,18 +97,25 @@ public class MovieDetailsORM {
     }
 
     public void setGenres(String...strings){
-        genres.addAll(Arrays.asList(strings));
+        setGenres(Arrays.asList(strings));
     }
     public void setGenres(List<String> genres) {
-        this.genres = genres;
+        this.genres.addAll(genres);
     }
 
-    public String getRelease_date() {
+    public Date getRelease_date() {
         return release_date;
     }
 
-    public void setRelease_date(String release_date) {
+    public void setRelease_date(Date release_date) {
         this.release_date = release_date;
     }
 
+    public String getId(){
+        return id;
+    }
+
+    public void setId(String id){
+        this.id = id;
+    }
 }

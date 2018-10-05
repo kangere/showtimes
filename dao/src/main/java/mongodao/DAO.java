@@ -13,4 +13,15 @@ public interface DAO<T> {
     T findFirst();
 
     List<T> findAll();
+
+    void insert(T orm);
+
+    void insertAll(List<T> orms);
+
+    void update(T orm);
+
+    void deleteOne(String id);
+
+    T findOne(String id);
+
 }
