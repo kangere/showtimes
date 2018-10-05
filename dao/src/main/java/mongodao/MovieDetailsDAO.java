@@ -75,7 +75,7 @@ public class MovieDetailsDAO implements DAO<MovieDetailsORM>{
 
     }
 
-    
+
     @Override
     public void deleteOne(String id) {
         movieDetails.deleteOne(eq("_id",new ObjectId(id)));
