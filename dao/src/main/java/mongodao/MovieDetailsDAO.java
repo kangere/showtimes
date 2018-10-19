@@ -79,5 +79,5 @@ public class MovieDetailsDAO extends AbstractDAO<MovieDetailsORM>{
         collection.deleteOne(eq("_id",new ObjectId(id)));
     }
 
-  
+
 }
