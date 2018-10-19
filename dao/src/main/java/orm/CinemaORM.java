@@ -4,5 +4,9 @@ public class CinemaORM {
 
     private String name;
 
-    private String address;
+    private String latitude;
+
+    private String longitude;
+
+
 }

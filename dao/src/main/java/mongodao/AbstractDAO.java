@@ -11,9 +11,10 @@ public abstract class AbstractDAO<T> implements DAO<T> {
     protected MongoCollection<Document> collection;
     private MongoClient client;
 
-    protected AbstractDAO(String tableName,String collectionName){
+
+    protected AbstractDAO(String databaseName,String collectionName){
         client = MongoClients.create();
-        MongoDatabase db = client.getDatabase(tableName);
+        MongoDatabase db = client.getDatabase(databaseName);
         collection = db.getCollection(collectionName);
     }
 

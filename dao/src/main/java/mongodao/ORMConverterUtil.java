@@ -1,6 +1,6 @@
 package mongodao;
 
-import com.sun.istack.internal.NotNull;
+
 import org.bson.Document;
 import orm.MovieDetailsORM;
 
@@ -11,7 +11,7 @@ import java.util.List;
 public class ORMConverterUtil {
 
     //TODO find generic way of conversion
-    public static MovieDetailsORM convertToORM(@NotNull Document document){
+    public static MovieDetailsORM convertToORM(Document document){
 
         MovieDetailsORM orm = new MovieDetailsORM();
 
