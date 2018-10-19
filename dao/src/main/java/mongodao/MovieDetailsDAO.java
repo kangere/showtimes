@@ -14,21 +14,19 @@ import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 
-public class MovieDetailsDAO implements DAO<MovieDetailsORM>{
+public class MovieDetailsDAO extends AbstractDAO<MovieDetailsORM>{
 
-    private MongoCollection<Document> movieDetails;
-    private MongoClient client;
+
 
     public MovieDetailsDAO(){
-        client = MongoClients.create();
-        MongoDatabase db = client.getDatabase("movies");
-        movieDetails = db.getCollection("movieDetails");
+        super("movies","movieDetails");
+
     }
 
     @Override
     public MovieDetailsORM findFirst(){
 
-        Document doc = movieDetails.find().first();
+        Document doc = collection.find().first();
 
         return  ORMConverterUtil.convertToORM(doc);
     }
@@ -38,7 +36,7 @@ public class MovieDetailsDAO implements DAO<MovieDetailsORM>{
 
         List<MovieDetailsORM> orms = new ArrayList<>();
 
-        for(Document document : movieDetails.find().into(new ArrayList<>()))
+        for(Document document : collection.find().into(new ArrayList<>()))
             orms.add(ORMConverterUtil.convertToORM(document));
 
         return orms;
@@ -46,17 +44,17 @@ public class MovieDetailsDAO implements DAO<MovieDetailsORM>{
 
     @Override
     public MovieDetailsORM findOne(String id) {
-        Document document = movieDetails.find(eq("_id", new ObjectId(id))).first();
+        Document document = collection.find(eq("_id", new ObjectId(id))).first();
         return ORMConverterUtil.convertToORM(document);
     }
 
     @Override
     public void insert(MovieDetailsORM orm) {
 
-        Document doc = movieDetails.find(eq("const",orm.getConstant())).first();
+        Document doc = collection.find(eq("const",orm.getConstant())).first();
 
         if(doc == null){
-            movieDetails.insertOne(ORMConverterUtil.convertToDocument(orm));
+            collection.insertOne(ORMConverterUtil.convertToDocument(orm));
         } else {
             System.out.println("Document already exists");
         }
@@ -78,10 +76,8 @@ public class MovieDetailsDAO implements DAO<MovieDetailsORM>{
 
     @Override
     public void deleteOne(String id) {
-        movieDetails.deleteOne(eq("_id",new ObjectId(id)));
+        collection.deleteOne(eq("_id",new ObjectId(id)));
     }
 
-    public void close() {
-        client.close();
-    }
+  
 }
